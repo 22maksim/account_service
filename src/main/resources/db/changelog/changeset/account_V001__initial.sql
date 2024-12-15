@@ -1,5 +1,5 @@
 CREATE TABLE account (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     owner_id bigint,
     type smallint NOT NULL,
     currency smallint NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE account (
 );
 
 CREATE TABLE balance (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     account int,
     authorization_balance bigint default 0,
     current_balance bigint default 0,
