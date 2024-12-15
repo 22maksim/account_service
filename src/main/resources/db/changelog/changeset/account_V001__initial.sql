@@ -9,7 +9,7 @@ CREATE TABLE account (
     created_at TIMESTAMP DEFAULT current_timestamp,
     update_at TIMESTAMP DEFAULT current_timestamp,
     close_at TIMESTAMP,
-    version INT NOT NULL
+    version INT DEFAULT 1
 );
 
 CREATE TABLE balance (
@@ -19,7 +19,7 @@ CREATE TABLE balance (
     current_balance bigint default 0,
     created_at timestamptz DEFAULT current_timestamp,
     update_at TIMESTAMP DEFAULT current_timestamp,
-    version INT NOT NULL
+    version INT DEFAULT 1
 );
 
 CREATE TABLE balance_audit (
@@ -38,3 +38,17 @@ CREATE TABLE free_account_numbers (
     type smallint
 );
 
+CREATE TABLE savings_account (
+    account_id VARCHAR(36),
+    tariff_history json,
+    update_percent TIMESTAMP,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    update_at TIMESTAMP DEFAULT current_timestamp,
+    version int DEFAULT 1
+);
+
+CREATE TABLE rate (
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY UNIQUE,
+    type smallint,
+    history json
+)
