@@ -14,7 +14,7 @@ CREATE TABLE account (
 
 CREATE TABLE balance (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    account varchar(36),
+    account_id varchar(36),
     authorization_balance bigint default 200,
     current_balance bigint default 0,
     created_at timestamptz DEFAULT current_timestamp,
@@ -24,7 +24,7 @@ CREATE TABLE balance (
 
 CREATE TABLE balance_audit (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    account varchar(36),
+    account_id varchar(36),
     type smallint not null,
     authorization_amount int default 200,
     actual_amount int default 0,
