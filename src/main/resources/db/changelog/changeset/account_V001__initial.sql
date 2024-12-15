@@ -39,7 +39,7 @@ CREATE TABLE free_account_numbers (
 );
 
 CREATE TABLE savings_account (
-    account_id VARCHAR(36),
+    account_id VARCHAR(36) PRIMARY KEY,
     tariff_history json,
     update_percent TIMESTAMP,
     created_at TIMESTAMP DEFAULT current_timestamp,
@@ -49,6 +49,9 @@ CREATE TABLE savings_account (
 
 CREATE TABLE rate (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY UNIQUE,
+    tariff_rate VARCHAR(5),
     type smallint,
     history json
-)
+);
+
+CREATE TABLE
