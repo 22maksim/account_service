@@ -1,5 +1,28 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+CREATE OR REPLACE FUNCTION update_timestamp()
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.update_at = current_timestamp;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_update_at
+    BEFORE UPDATE ON balance_audit
+    FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+
+CREATE TRIGGER set_update_at
+    BEFORE UPDATE ON account
+    FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+
+CREATE TRIGGER set_update_at
+    BEFORE UPDATE ON savings_account
+    FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+
 CREATE TABLE account (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     owner_id bigint,
@@ -53,5 +76,3 @@ CREATE TABLE rate (
     type smallint,
     history json
 );
-
-CREATE TABLE
