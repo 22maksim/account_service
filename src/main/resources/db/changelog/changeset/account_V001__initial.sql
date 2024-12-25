@@ -27,28 +27,32 @@ CREATE TRIGGER set_update_at
     FOR EACH ROW
 EXECUTE FUNCTION update_timestamp();
 
-CREATE TABLE account
-(
-    id         UUID      DEFAULT uuid_generate_v4() PRIMARY KEY,
-    owner_id   bigint,
-    type       smallint NOT NULL,
-    currency   smallint NOT NULL,
-    status     smallint NOT NULL,
+CREATE TABLE account (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    owner_id bigint,
+    type VARCHAR(15) NOT NULL,
+    currency VARCHAR(15) NOT NULL,
+    status VARCHAR(15) NOT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp,
-    update_at  TIMESTAMP DEFAULT current_timestamp,
-    close_at   TIMESTAMP,
-    version    INT       DEFAULT 1
+    update_at TIMESTAMP DEFAULT current_timestamp,
+    close_at TIMESTAMP,
+    version INT DEFAULT 1
 );
 
-CREATE TABLE balance
-(
-    id                    UUID        DEFAULT uuid_generate_v4() PRIMARY KEY,
-    account_id            varchar(36),
-    authorization_balance bigint      default 200,
-    current_balance       bigint      default 0,
-    created_at            timestamptz DEFAULT current_timestamp,
-    update_at             TIMESTAMP   DEFAULT current_timestamp,
-    version               INT         DEFAULT 1
+CREATE TABLE owners (
+    id BIGINT PRIMARY KEY GENERATED,
+    owner_id BIGINT NOT NULL,
+    type VARCHAR(15)
+)
+
+CREATE TABLE balance (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    account_id varchar(36),
+    authorization_balance bigint default 200,
+    current_balance bigint default 0,
+    created_at timestamptz DEFAULT current_timestamp,
+    update_at TIMESTAMP DEFAULT current_timestamp,
+    version INT DEFAULT 1
 );
 
 CREATE TABLE balance_audit
@@ -98,3 +102,8 @@ INSERT INTO account_numbers_sequence (type, counter)
 VALUES ('DEBIT', 0),
        ('CREDIT', 0),
        ('CUMULATIVE', 0);
+
+ALTER TABLE account
+ADD CONSTRAINT fk_owner
+foreign key (owner_id)
+REFERENCES owners(id);
