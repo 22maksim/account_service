@@ -6,6 +6,7 @@ import com.example.account_service.exeption.DataAccountException;
 import com.example.account_service.exeption.UncorrectedValueRequest;
 import com.example.account_service.mapper.account.AccountMapper;
 import com.example.account_service.model.Account;
+import com.example.account_service.model.FreeAccountNumber;
 import com.example.account_service.model.Owner;
 import com.example.account_service.repository.account.AccountRepository;
 import com.example.account_service.repository.owners.OwnersRepository;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @Slf4j
 @Service
@@ -48,8 +52,16 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountMapper.toAccount(accountRequestDto);
         Owner owner = findOwner(accountRequestDto);
         account.setOwner(owner);
-        account = accountRepository.save(account);
+        account = freeAccountNumbersServiceImpl.getFreeAccountNumber(
+                accountRequestDto.getType().name(), saveAccountFunction(account));
         return accountMapper.toAccountResponseDto(account);
+    }
+
+    Function<String, Account> saveAccountFunction(Account account) {
+        return freeAccountNumber -> {
+            account.setId(freeAccountNumber);
+            return accountRepository.save(account);
+        };
     }
 
     @Override

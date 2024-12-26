@@ -1,6 +1,7 @@
 package com.example.account_service.service.free_account_numbers;
 
 import com.example.account_service.dto.FreeAccountNumberDto;
+import com.example.account_service.model.Account;
 import com.example.account_service.model.FreeAccountNumber;
 import com.example.account_service.model.enums.NumberCode;
 import com.example.account_service.model.enums.TypeNumber;
@@ -12,11 +13,13 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 @Slf4j
@@ -26,14 +29,21 @@ public class FreeAccountNumbersServiceImpl implements FreeAccountNumbersService 
     private final FreeAccountNumbersRepository freeAccountNumbersRepository;
     private final AccountNumbersSequenceRepository accountNumbersSequenceRepository;
 
-    public FreeAccountNumberDto getFreeAccountNumber(String type, Predicate<String> function) {
-        function.test(type);
-        // надо продолжить после создания аккаунта
-
-        return null;
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public Account getFreeAccountNumber(String type, Function<String, Account> function) {
+        if (!freeAccountNumbersRepository.existsFreeAccountNumberByType(TypeNumber.valueOf(type))) {
+            addAccountNumbersSequenceAndFreeAccountNumbers(type);
+        }
+        FreeAccountNumber accountNumber = freeAccountNumbersRepository.getFreeAccountNumberAndDelete(type);
+        if (accountNumber == null) {
+            addAccountNumbersSequenceAndFreeAccountNumbers(type);
+            accountNumber = freeAccountNumbersRepository.getFreeAccountNumberAndDelete(type);
+        }
+        String number = accountNumber.getAccount_number();
+        return function.apply(number);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Retryable(retryFor = OptimisticLockingFailureException.class, backoff = @Backoff(delay = 5000, multiplier = 2))
     public void addAccountNumbersSequenceAndFreeAccountNumbers(String type) {
         int valueInSequence = accountNumbersSequenceRepository.getCounter(type);
@@ -42,7 +52,7 @@ public class FreeAccountNumbersServiceImpl implements FreeAccountNumbersService 
         addFreeAccountNumbers(freeAccountNumbers);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void addFreeAccountNumbers(List<FreeAccountNumber> accountNumbers) {
         if (accountNumbers.isEmpty()) {
             log.info("Account numbers don't have been added");

@@ -34,7 +34,7 @@ EXECUTE FUNCTION update_timestamp();
 /* TABLES */
 
 CREATE TABLE account (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id VARCHAR(20) PRIMARY KEY,
     owner_id bigint,
     type VARCHAR(15) NOT NULL,
     currency VARCHAR(15) NOT NULL,

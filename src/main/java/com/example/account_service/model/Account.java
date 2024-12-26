@@ -6,9 +6,7 @@ import com.example.account_service.model.enums.TypeAccountNumber;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Builder
 @Table(name = "account")
@@ -18,11 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "UUID")
-    private UUID id;
+    private String id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
