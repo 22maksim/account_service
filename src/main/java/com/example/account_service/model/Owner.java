@@ -2,14 +2,12 @@ package com.example.account_service.model;
 
 import com.example.account_service.model.enums.TypeOwner;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "owners")
 @NoArgsConstructor
 @AllArgsConstructor

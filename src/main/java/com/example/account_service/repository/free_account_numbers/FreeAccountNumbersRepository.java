@@ -1,4 +1,4 @@
-package com.example.account_service.repository;
+package com.example.account_service.repository.free_account_numbers;
 
 import com.example.account_service.model.FreeAccountNumber;
 import org.springframework.data.jpa.repository.JpaRepository;

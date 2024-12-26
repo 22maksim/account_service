@@ -1,4 +1,4 @@
-package com.example.account_service.repository;
+package com.example.account_service.repository.account_number_sequence;
 
 import com.example.account_service.model.AccountNumbersSequence;
 import io.lettuce.core.dynamic.annotation.Param;

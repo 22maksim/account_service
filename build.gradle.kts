@@ -23,6 +23,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.2")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-security:3.4.1")
 	implementation("org.springframework.retry:spring-retry")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
@@ -42,7 +43,10 @@ dependencies {
 	implementation("org.projectlombok:lombok:1.18.26")
 	annotationProcessor("org.projectlombok:lombok:1.18.26")
 	implementation("org.mapstruct:mapstruct:1.5.3.Final")
+	implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
+
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
+
 
 	/**
 	 * Test containers

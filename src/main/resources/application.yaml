@@ -23,6 +23,8 @@ spring:
       host: localhost
       channel:
 
+  profiles:
+    active: data
 
 server:
   port: 8088
@@ -34,3 +36,9 @@ logging:
 async:
   pools:
     worker: worker-pool-
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: api/docs

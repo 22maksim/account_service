@@ -1,5 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+/* FUNCTIONS */
+
 CREATE OR REPLACE FUNCTION update_timestamp()
     RETURNS TRIGGER AS
 $$
@@ -8,6 +10,8 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+/* TRIGGERS */
 
 CREATE TRIGGER set_update_at
     BEFORE UPDATE
@@ -26,6 +30,8 @@ CREATE TRIGGER set_update_at
     ON savings_account
     FOR EACH ROW
 EXECUTE FUNCTION update_timestamp();
+
+/* TABLES */
 
 CREATE TABLE account (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -103,7 +109,13 @@ VALUES ('DEBIT', 0),
        ('CREDIT', 0),
        ('CUMULATIVE', 0);
 
+/* MIGRATIONS */
+
 ALTER TABLE account
 ADD CONSTRAINT fk_owner
 foreign key (owner_id)
 REFERENCES owners(id);
+
+/* INDEXES */
+
+CREATE INDEX idx_owner ON account (owner_id);

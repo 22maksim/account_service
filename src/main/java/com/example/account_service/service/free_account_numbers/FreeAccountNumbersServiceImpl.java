@@ -1,11 +1,11 @@
-package com.example.account_service.service;
+package com.example.account_service.service.free_account_numbers;
 
 import com.example.account_service.dto.FreeAccountNumberDto;
 import com.example.account_service.model.FreeAccountNumber;
 import com.example.account_service.model.enums.NumberCode;
 import com.example.account_service.model.enums.TypeNumber;
-import com.example.account_service.repository.AccountNumbersSequenceRepository;
-import com.example.account_service.repository.FreeAccountNumbersRepository;
+import com.example.account_service.repository.account_number_sequence.AccountNumbersSequenceRepository;
+import com.example.account_service.repository.free_account_numbers.FreeAccountNumbersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 @Slf4j
