@@ -1,0 +1,22 @@
+user-login:
+  username: admin
+  password: admin123
+
+topic:
+  redis:
+    channelInfoAccount: account-info
+    channelErrorAccount: account-error
+
+  kafka:
+    channelInfo: account-info
+
+batch:
+  box:
+    size: 10
+    volume: 500
+
+cron:
+  operation:
+    free:
+      account:
+        number: '0 */30 * * * *'

@@ -21,8 +21,9 @@ spring:
     redis:
       port: 6379
       host: localhost
-      channel:
 
+  profiles:
+    active: data
 
 server:
   port: 8088
@@ -33,4 +34,10 @@ logging:
 
 async:
   pools:
-    worker: worker-pool-
+    worker: Async-worker-
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: api/docs

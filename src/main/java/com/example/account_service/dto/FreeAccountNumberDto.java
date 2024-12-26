@@ -1,4 +1,8 @@
 package com.example.account_service.dto;
 
-public record FreeAccountNumberDto() {
+import java.io.Serializable;
+
+public record FreeAccountNumberDto(
+
+) implements Serializable {
 }
