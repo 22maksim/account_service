@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Currency;
 
 @Builder
@@ -14,7 +15,7 @@ import java.util.Currency;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountRequestDto {
+public class AccountRequestDto implements Serializable {
     private String id;
     @Positive
     private long ownerId;

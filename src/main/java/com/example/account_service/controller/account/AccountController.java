@@ -34,19 +34,41 @@ public class AccountController {
         return accountService.get(id);
     }
 
+    @Operation(summary = "Open new Account", description = "Created new Account from owner")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Created new Account"),
+            @ApiResponse(responseCode = "404", description = "Account not created")
+    })
     @PutMapping
-    public AccountResponseDto open(@RequestBody @Valid @NotNull AccountRequestDto accountRequestDto) {
+    public AccountResponseDto open(
+            @Parameter(description = "DTO containing the data required to create a new account")
+            @RequestBody @Valid @NotNull AccountRequestDto accountRequestDto) {
         return accountService.open(accountRequestDto);
     }
 
+    @Operation(summary = "Block account", description = "This method from block account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Account successfully blocked"),
+            @ApiResponse(responseCode = "404", description = "Account could not be blocked")
+    })
     @PostMapping("{id}")
-    public AccountResponseDto block(@PathVariable @NotNull @Positive Long id) {
+    public AccountResponseDto block(
+            @Parameter(description = "The account is locked by this id")
+            @PathVariable @NotNull @Positive Long id) {
         return accountService.block(id);
     }
 
+    @Operation(summary = "Close Account", description = "This method from closed account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The account successfully closed"),
+            @ApiResponse(responseCode = "404", description = "The account could not be closed")
+    })
     @PostMapping("{id}/close")
-    public AccountResponseDto close(@PathVariable @NotNull @Positive Long id,
-                                    @RequestBody @NotNull @Valid AccountRequestDto accountRequestDto) {
+    public AccountResponseDto close(
+            @Parameter(description = "This id from closed the account")
+            @PathVariable @NotNull @Positive Long id,
+            @Parameter(description = "Dto from update and close Account")
+            @RequestBody @NotNull @Valid AccountRequestDto accountRequestDto) {
         return accountService.close(id, accountRequestDto);
     }
 }

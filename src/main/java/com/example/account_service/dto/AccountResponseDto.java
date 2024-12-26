@@ -5,10 +5,11 @@ import com.example.account_service.model.enums.TypeOwner;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Currency;
 
-public class AccountResponseDto {
+public class AccountResponseDto implements Serializable {
     private String id;
     @Positive
     private long ownerId;
