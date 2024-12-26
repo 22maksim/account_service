@@ -20,7 +20,7 @@ public class AsyncFreeAccountNumberServiceImpl implements AsyncFreeAccountNumber
                 String type = typeNumber.name();
                 long currencyValue = currency.getValue();
                 int counterFreeAccountNumbers = freeAccountNumbersServiceImpl.getFreeAccountNumbersCount(type);
-                for (int i = counterFreeAccountNumbers; i <= 500; i += boxProperties.size()) {
+                for (int i = counterFreeAccountNumbers; i <= boxProperties.volume(); i += boxProperties.size()) {
                     operationFreeAccountNumber(type, currencyValue);
                 }
             }

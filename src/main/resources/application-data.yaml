@@ -13,6 +13,7 @@ topic:
 batch:
   box:
     size: 10
+    volume: 500
 
 cron:
   operation:

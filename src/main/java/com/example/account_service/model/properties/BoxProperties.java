@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "batch.box")
 public record BoxProperties(
-        int size
+        int size,
+        int volume
 ) {
 }
