@@ -6,11 +6,12 @@ import com.example.account_service.exeption.DataAccountException;
 import com.example.account_service.exeption.UncorrectedValueRequest;
 import com.example.account_service.mapper.account.AccountMapper;
 import com.example.account_service.model.Account;
-import com.example.account_service.model.FreeAccountNumber;
 import com.example.account_service.model.Owner;
+import com.example.account_service.model.enums.AccountStatus;
 import com.example.account_service.repository.account.AccountRepository;
 import com.example.account_service.repository.owners.OwnersRepository;
 import com.example.account_service.service.free_account_numbers.FreeAccountNumbersService;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.function.BiFunction;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.function.Function;
 
 @Slf4j
@@ -44,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public AccountResponseDto open(AccountRequestDto accountRequestDto) {
+    public AccountResponseDto open(@NotNull AccountRequestDto accountRequestDto) {
         if (accountRequestDto == null) {
             log.error("accountRequestDto is null");
             throw new UncorrectedValueRequest("accountRequestDto is null");
@@ -53,29 +55,37 @@ public class AccountServiceImpl implements AccountService {
         Owner owner = findOwner(accountRequestDto);
         account.setOwner(owner);
         account = freeAccountNumbersServiceImpl.getFreeAccountNumber(
-                accountRequestDto.getType().name(), saveAccountFunction(account));
+                accountRequestDto.getType().name(), account.getCurrency().getValue(), saveAccountFunction(account));
         return accountMapper.toAccountResponseDto(account);
     }
 
-    Function<String, Account> saveAccountFunction(Account account) {
+    Function<String, Account> saveAccountFunction(@NotNull Account account) {
         return freeAccountNumber -> {
             account.setId(freeAccountNumber);
             return accountRepository.save(account);
         };
     }
 
+    @Transactional
     @Override
-    public AccountResponseDto block(Long id) {
-        return null;
+    public AccountResponseDto block(@Positive Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new DataAccountException("Account not found"));
+        account.setStatus(AccountStatus.BLOCKED);
+        return accountMapper.toAccountResponseDto(accountRepository.save(account));
     }
 
+    @Transactional
     @Override
-    public AccountResponseDto close(Long id, AccountRequestDto accountRequestDto) {
-        return null;
+    public AccountResponseDto close(@Positive Long id, @NotNull AccountRequestDto accountRequestDto) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new DataAccountException("Account not found"));
+        account.setCloseAt(Timestamp.valueOf(LocalDateTime.now()));
+        account.setStatus(AccountStatus.CLOSED);
+        account = accountRepository.save(account);
+        return accountMapper.toAccountResponseDto(accountRepository.save(account));
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Owner findOwner(AccountRequestDto accountRequestDto) {
+    public Owner findOwner(@NotNull AccountRequestDto accountRequestDto) {
         if (ownersRepository.existsOwnerById(accountRequestDto.getOwnerId())) {
             return ownersRepository.findByOwnerId(accountRequestDto.getOwnerId());
         } else {

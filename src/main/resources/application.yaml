@@ -34,7 +34,7 @@ logging:
 
 async:
   pools:
-    worker: worker-pool-
+    worker: Async-worker-
 
 springdoc:
   api-docs:

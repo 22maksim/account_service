@@ -9,3 +9,13 @@ topic:
 
   kafka:
     channelInfo: account-info
+
+batch:
+  box:
+    size: 10
+
+cron:
+  operation:
+    free:
+      account:
+        number: '0 */30 * * * *'

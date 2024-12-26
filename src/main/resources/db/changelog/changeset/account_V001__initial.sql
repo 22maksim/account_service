@@ -53,7 +53,7 @@ CREATE TABLE owners (
 
 CREATE TABLE balance (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    account_id varchar(36),
+    account_id varchar(20),
     authorization_balance bigint default 200,
     current_balance bigint default 0,
     created_at timestamptz DEFAULT current_timestamp,
@@ -64,8 +64,8 @@ CREATE TABLE balance (
 CREATE TABLE balance_audit
 (
     id                   UUID      DEFAULT uuid_generate_v4() PRIMARY KEY,
-    account_id           varchar(36),
-    type                 smallint not null,
+    account_id           varchar(20),
+    type                 varchar(15) not null,
     authorization_amount int       default 200,
     actual_amount        int       default 0,
     transaction_changed  bigint   not null,
@@ -81,14 +81,14 @@ CREATE TABLE free_account_numbers
 
 CREATE TABLE account_numbers_sequence
 (
-    type    VARCHAR(10) PRIMARY KEY,
+    type    VARCHAR(15) PRIMARY KEY,
     counter BIGINT default 0,
     version INTEGER default 0
 )
 
 CREATE TABLE savings_account
 (
-    account_id     VARCHAR(36) PRIMARY KEY,
+    account_id     VARCHAR(20) PRIMARY KEY,
     tariff_history json,
     update_percent TIMESTAMP,
     created_at     TIMESTAMP DEFAULT current_timestamp,
@@ -100,7 +100,7 @@ CREATE TABLE rate
 (
     id          bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY UNIQUE,
     tariff_rate VARCHAR(5),
-    type        smallint,
+    type        VARCHAR(15),
     history     json
 );
 

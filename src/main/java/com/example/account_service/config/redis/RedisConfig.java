@@ -1,7 +1,7 @@
 package com.example.account_service.config.redis;
 
 import com.example.account_service.config.redis.listener.MessageListenerInfo;
-import com.example.account_service.config.redis.properties.RedisProperties;
+import com.example.account_service.model.properties.RedisProperties;
 import com.example.account_service.config.redis.topic.Topics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

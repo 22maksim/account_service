@@ -9,7 +9,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface FreeAccountNumbersRepository extends JpaRepository<FreeAccountNumber, Long> {
+    @Modifying
     @Query(value = """
                        DELETE FROM free_account_numbers WHERE account_number  = (
                             SELECT account_number FROM free_account_numbers fan 
@@ -21,4 +24,9 @@ public interface FreeAccountNumbersRepository extends JpaRepository<FreeAccountN
     FreeAccountNumber getFreeAccountNumberAndDelete(@Param("type") String type);
 
     boolean existsFreeAccountNumberByType(TypeNumber type);
+
+    @Query(value = """
+        SELECT COUNT(*) FROM free_account_numbers WHERE type = :type
+""", nativeQuery = true)
+    int getQuantityFreeAccountNumberByType(@Param("type") String type);
 }

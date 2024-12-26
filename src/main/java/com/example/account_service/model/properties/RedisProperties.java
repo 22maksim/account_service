@@ -1,4 +1,4 @@
-package com.example.account_service.config.redis.properties;
+package com.example.account_service.model.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
