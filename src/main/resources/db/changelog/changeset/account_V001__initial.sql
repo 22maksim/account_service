@@ -36,6 +36,7 @@ EXECUTE FUNCTION update_timestamp();
 CREATE TABLE account (
     id VARCHAR(20) PRIMARY KEY,
     owner_id bigint,
+    balance_id BIGINT,
     type VARCHAR(15) NOT NULL,
     currency VARCHAR(15) NOT NULL,
     status VARCHAR(15) NOT NULL,
@@ -52,7 +53,7 @@ CREATE TABLE owners (
 )
 
 CREATE TABLE balance (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     account_id varchar(20),
     authorization_balance bigint default 200,
     current_balance bigint default 0,
@@ -63,7 +64,7 @@ CREATE TABLE balance (
 
 CREATE TABLE balance_audit
 (
-    id                   UUID      DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id                   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     account_id           varchar(20),
     type                 varchar(15) not null,
     authorization_amount int       default 200,
@@ -74,7 +75,7 @@ CREATE TABLE balance_audit
 
 CREATE TABLE free_account_numbers
 (
-    id             bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY UNIQUE,
+    id             bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     account_number VARCHAR(20),
     type           VARCHAR(15)
 );
@@ -98,7 +99,7 @@ CREATE TABLE savings_account
 
 CREATE TABLE rate
 (
-    id          bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY UNIQUE,
+    id          bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     tariff_rate VARCHAR(5),
     type        VARCHAR(15),
     history     json
@@ -109,12 +110,17 @@ VALUES ('DEBIT', 0),
        ('CREDIT', 0),
        ('CUMULATIVE', 0);
 
-/* MIGRATIONS */
-
+/* dependencies */
+--если уходит владелец счета, тогда удаляются и все его аккаунты, и без owner в таблице нельзя открыть аккаунт
 ALTER TABLE account
 ADD CONSTRAINT fk_owner
 foreign key (owner_id)
 REFERENCES owners(id);
+--если удаляется аккаунт тогда удаляется его баланс, без аккаунта не создать баланс
+ALTER TABLE balance
+ADD CONSTRAINT ac_balance
+foreign key (account_id)
+REFERENCES account(id)
 
 /* INDEXES */
 

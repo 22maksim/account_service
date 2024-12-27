@@ -25,6 +25,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-security:3.4.1")
 	implementation("org.springframework.retry:spring-retry")
+	implementation("org.springframework.kafka:spring-kafka:3.3.1")
+	implementation("org.springframework.boot:spring-boot-starter-actuator:3.4.1")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

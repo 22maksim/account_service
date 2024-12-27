@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
+    // Да пока хардкод!!! Для примера
     @Value("${user-login.username}")
     private String username;
     @Value("${user-login.password}")
