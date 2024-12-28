@@ -18,7 +18,7 @@ public class Balance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "balance", cascade = CascadeType.ALL)
     private Account account;
 
     @Column(name = "authorization_balance", nullable = false)

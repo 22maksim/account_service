@@ -1,4 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 /* FUNCTIONS */
 
@@ -11,29 +10,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/* TRIGGERS */
-
-CREATE TRIGGER set_update_at
-    BEFORE UPDATE
-    ON balance_audit
-    FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
-
-CREATE TRIGGER set_update_at
-    BEFORE UPDATE
-    ON account
-    FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
-
-CREATE TRIGGER set_update_at
-    BEFORE UPDATE
-    ON savings_account
-    FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
-
 /* TABLES */
 
-CREATE TABLE account (
+CREATE TABLE IF NOT EXISTS account (
     id VARCHAR(20) PRIMARY KEY,
     owner_id bigint,
     balance_id BIGINT,
@@ -46,13 +25,13 @@ CREATE TABLE account (
     version INT DEFAULT 1
 );
 
-CREATE TABLE owners (
-    id BIGINT PRIMARY KEY GENERATED,
-    owner_id BIGINT NOT NULL,
-    type VARCHAR(15)
-)
+CREATE TABLE IF NOT EXISTS owners (
+                        id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                        owner_id BIGINT NOT NULL,
+                        type VARCHAR(15)
+);
 
-CREATE TABLE balance (
+CREATE TABLE IF NOT EXISTS balance (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     account_id varchar(20),
     authorization_balance bigint default 200,
@@ -62,7 +41,7 @@ CREATE TABLE balance (
     version INT DEFAULT 1
 );
 
-CREATE TABLE balance_audit
+CREATE TABLE IF NOT EXISTS balance_audit
 (
     id                   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     account_id           varchar(20),
@@ -73,21 +52,21 @@ CREATE TABLE balance_audit
     created_at           TIMESTAMP DEFAULT current_timestamp
 );
 
-CREATE TABLE free_account_numbers
+CREATE TABLE IF NOT EXISTS free_account_numbers
 (
     id             bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     account_number VARCHAR(20),
     type           VARCHAR(15)
 );
 
-CREATE TABLE account_numbers_sequence
+CREATE TABLE IF NOT EXISTS account_numbers_sequence
 (
     type    VARCHAR(15) PRIMARY KEY,
     counter BIGINT default 0,
     version INTEGER default 0
-)
+);
 
-CREATE TABLE savings_account
+CREATE TABLE IF NOT EXISTS savings_account
 (
     account_id     VARCHAR(20) PRIMARY KEY,
     tariff_history json,
@@ -97,31 +76,35 @@ CREATE TABLE savings_account
     version        int       DEFAULT 1
 );
 
-CREATE TABLE rate
+CREATE TABLE IF NOT EXISTS rate
 (
     id          bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    tariff_rate VARCHAR(5),
+    tariff_rate VARCHAR(15),
     type        VARCHAR(15),
     history     json
 );
 
-INSERT INTO account_numbers_sequence (type, counter)
-VALUES ('DEBIT', 0),
-       ('CREDIT', 0),
-       ('CUMULATIVE', 0);
+-- INSERT  INTO account_numbers_sequence  (type, counter)
+-- VALUES ('DEBIT', 0),
+--        ('CREDIT', 0),
+--        ('CUMULATIVE', 0);
 
 /* dependencies */
---если уходит владелец счета, тогда удаляются и все его аккаунты, и без owner в таблице нельзя открыть аккаунт
-ALTER TABLE account
-ADD CONSTRAINT fk_owner
-foreign key (owner_id)
-REFERENCES owners(id);
---если удаляется аккаунт тогда удаляется его баланс, без аккаунта не создать баланс
-ALTER TABLE balance
-ADD CONSTRAINT ac_balance
-foreign key (account_id)
-REFERENCES account(id)
+-- ALTER TABLE account
+--     ADD CONSTRAINT fk_owner
+--         foreign key (owner_id)
+--             REFERENCES owners(id);
+--
+-- ALTER TABLE balance
+--     ADD CONSTRAINT fk_balance_account
+--         FOREIGN KEY (account_id)
+--             REFERENCES account (id);
+--
+-- ALTER TABLE balance_audit
+--     ADD CONSTRAINT fk_balance_audit_account
+--         FOREIGN KEY (account_id)
+--             REFERENCES account (id);
 
 /* INDEXES */
 
-CREATE INDEX idx_owner ON account (owner_id);
+-- CREATE INDEX idx_owner ON account (owner_id);

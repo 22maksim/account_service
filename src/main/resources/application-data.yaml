@@ -20,3 +20,14 @@ cron:
     free:
       account:
         number: '0 */30 * * * *'
+
+
+logging:
+  level:
+    com:
+      example:
+        account_service: DEBUG
+    org:
+      springframework:
+        data:
+          redis: DEBUG

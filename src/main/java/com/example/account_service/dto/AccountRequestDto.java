@@ -24,7 +24,7 @@ public class AccountRequestDto implements Serializable {
     @NotNull
     private TypeAccountNumber type;
     @NotNull
-    private Currency currency;
+    private String currency;
     @NotNull
     private AccountStatus status;
 }
