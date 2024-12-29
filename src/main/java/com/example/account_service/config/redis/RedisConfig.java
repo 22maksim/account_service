@@ -1,13 +1,11 @@
 package com.example.account_service.config.redis;
 
 import com.example.account_service.config.redis.listener.MessageListenerInfo;
+import com.example.account_service.config.redis.topic.RedisTopics;
 import com.example.account_service.model.properties.RedisProperties;
-import com.example.account_service.config.redis.topic.Topics;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,8 +19,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
     private final RedisProperties redisProperties;
-    private final Topics topics;
-    private final ApplicationContext context;
+    private final RedisTopics redisTopics;
 
     @Bean
     JedisConnectionFactory redisConnectionFactory() {
@@ -48,7 +45,6 @@ public class RedisConfig {
         container.setConnectionFactory(redisConnectionFactory);
         container.setTopicSerializer(new Jackson2JsonRedisSerializer<>(String.class));
         container.addMessageListener(messageListenerAdapterInfo(), topicInfo());
-
         return container;
     }
 
@@ -59,6 +55,6 @@ public class RedisConfig {
 
     @Bean
     ChannelTopic topicInfo() {
-        return new ChannelTopic(topics.channelInfoAccount());
+        return new ChannelTopic(redisTopics.channelInfoAccount());
     }
 }

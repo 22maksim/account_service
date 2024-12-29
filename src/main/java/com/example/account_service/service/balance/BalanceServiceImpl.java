@@ -13,10 +13,14 @@ import com.example.account_service.repository.owners.OwnersRepository;
 import com.example.account_service.service.balance.clearing.ClearingProcessServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@CacheConfig(cacheNames = "balances")
 @RequiredArgsConstructor
 @Service
 public class BalanceServiceImpl implements BalanceService {
@@ -26,6 +30,7 @@ public class BalanceServiceImpl implements BalanceService {
     private final BalanceMapper balanceMapper;
     private final ClearingProcessServiceImpl clearingProcessServiceImpl;
 
+    @Override
     public BalanceResponseDto getBalanceById(Long id) {
         Balance balance = balanceRepository.findBalanceById(id);
         if (balance == null) {

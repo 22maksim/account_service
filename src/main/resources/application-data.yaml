@@ -8,7 +8,10 @@ topic:
     channelErrorAccount: account-error
 
   kafka:
-    channelInfo: account-info
+    blockFundsTopic: block-funds-topic
+    confirmPaymentTopic: confirm-payment-topic
+    cancelPaymentTopic: cancel-payment-topic
+    successfulAuthorizationTopic: successful-authorization-topic
 
 batch:
   box:
