@@ -11,10 +11,15 @@ import com.example.account_service.model.enums.AccountStatus;
 import com.example.account_service.repository.account.AccountRepository;
 import com.example.account_service.repository.owners.OwnersRepository;
 import com.example.account_service.service.free_account_numbers.FreeAccountNumbersService;
+import io.netty.channel.ChannelHandler;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,18 +40,18 @@ public class AccountServiceImpl implements AccountService {
     private final OwnersRepository ownersRepository;
 
     @Override
-    public AccountResponseDto get(@Positive Long id) {
-        if (id == null || id <= 0) {
+    public AccountResponseDto get(String id) {
+        if (id.isEmpty()) {
             log.error("accountRequestDto is null or is empty");
             throw new UncorrectedValueRequest("accountRequestDto is null");
         }
-        Account account = accountRepository.findById(id).orElseThrow(() -> new DataAccountException("Account not found"));
+        Account account = accountRepository.findAccountById(id);
         return accountMapper.toAccountResponseDto(account);
     }
 
     @Transactional
     @Override
-    public AccountResponseDto open(@NotNull AccountRequestDto accountRequestDto) {
+    public AccountResponseDto open(AccountRequestDto accountRequestDto) {
         if (accountRequestDto == null) {
             log.error("accountRequestDto is null");
             throw new UncorrectedValueRequest("accountRequestDto is null");
@@ -68,16 +73,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public AccountResponseDto block(@Positive Long id) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new DataAccountException("Account not found"));
+    public AccountResponseDto block(String id) {
+        Account account = accountRepository.findAccountById(id);
         account.setStatus(AccountStatus.BLOCKED);
         return accountMapper.toAccountResponseDto(accountRepository.save(account));
     }
 
     @Transactional
     @Override
-    public AccountResponseDto close(@Positive Long id, @NotNull AccountRequestDto accountRequestDto) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new DataAccountException("Account not found"));
+    public AccountResponseDto close(String id, AccountRequestDto accountRequestDto) {
+        Account account = accountRepository.findAccountById(id);
         account.setCloseAt(Timestamp.valueOf(LocalDateTime.now()));
         account.setStatus(AccountStatus.CLOSED);
         account = accountRepository.save(account);
@@ -85,7 +90,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Owner findOwner(@NotNull AccountRequestDto accountRequestDto) {
+    public Owner findOwner(AccountRequestDto accountRequestDto) {
         if (ownersRepository.existsOwnerById(accountRequestDto.getOwnerId())) {
             return ownersRepository.findByOwnerId(accountRequestDto.getOwnerId());
         } else {
@@ -95,5 +100,10 @@ public class AccountServiceImpl implements AccountService {
                             .type(accountRequestDto.getTypeOwner()).build()
             );
         }
+    }
+
+    @Override
+    public boolean existsAccountById(String id) {
+        return accountRepository.existsAccountById(id);
     }
 }

@@ -19,9 +19,13 @@ public class Account {
     @Id
     private String id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
     private Owner owner;
+
+    @OneToOne
+    @JoinColumn(name = "balance_id", referencedColumnName = "id")
+    private Balance balance;
 
     @Column(name = "type", nullable = false)
     private TypeAccountNumber type;

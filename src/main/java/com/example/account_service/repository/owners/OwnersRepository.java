@@ -8,4 +8,6 @@ public interface OwnersRepository extends JpaRepository<Owner, Long> {
     Owner findByOwnerId(Long ownerId);
 
     boolean existsOwnerById(Long id);
+
+    boolean existsOwnerByOwnerId(Long ownerId);
 }

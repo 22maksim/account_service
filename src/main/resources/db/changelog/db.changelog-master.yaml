@@ -1,5 +1,5 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/changeset/account_V001__initial.sql
+      file: db/changelog/changeset/account_V001_initial.sql
   - include:
-        file: db/changelog/changeset/account_V002__security.sql
+      file: db/changelog/changeset/account_V002_request.sql

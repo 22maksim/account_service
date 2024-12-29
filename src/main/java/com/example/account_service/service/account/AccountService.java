@@ -4,11 +4,13 @@ import com.example.account_service.dto.AccountRequestDto;
 import com.example.account_service.dto.AccountResponseDto;
 
 public interface AccountService {
-    public AccountResponseDto get(Long id);
+    AccountResponseDto get(String id);
 
-    public AccountResponseDto open(AccountRequestDto accountRequestDto);
+    AccountResponseDto open(AccountRequestDto accountRequestDto);
 
-    public AccountResponseDto block(Long id);
+    AccountResponseDto block(String id);
 
-    public AccountResponseDto close(Long id, AccountRequestDto accountRequestDto);
+    AccountResponseDto close(String id, AccountRequestDto accountRequestDto);
+
+    boolean existsAccountById(String id);
 }
