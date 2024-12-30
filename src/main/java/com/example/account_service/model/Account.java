@@ -2,7 +2,7 @@ package com.example.account_service.model;
 
 import com.example.account_service.model.enums.AccountStatus;
 import com.example.account_service.model.enums.Currency;
-import com.example.account_service.model.enums.TypeAccountNumber;
+import com.example.account_service.model.enums.TypeNumber;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +28,7 @@ public class Account {
     private Balance balance;
 
     @Column(name = "type", nullable = false)
-    private TypeAccountNumber type;
+    private TypeNumber type;
 
     @Column(name = "currency", nullable = false)
     private Currency currency;

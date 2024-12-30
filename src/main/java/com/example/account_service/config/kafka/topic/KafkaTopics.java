@@ -7,6 +7,6 @@ public record KafkaTopics(
         String blockFundsTopic,
         String confirmPaymentTopic,
         String cancelPaymentTopic,
-        String successfulAuthorizationTopic
+        String authorizationTopic
 ) {
 }

@@ -1,6 +1,8 @@
 package com.example.account_service.service.kafka;
 
+import com.example.account_service.config.kafka.partitions.KafkaPartitions;
 import com.example.account_service.config.kafka.topic.KafkaTopics;
+import com.example.account_service.dto.MyMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -13,37 +15,44 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KafkaServiceImpl implements KafkaService {
-    private final KafkaTemplate<String, String> kafkaTemplate;
+public class KafkaServiceImpl<T> implements KafkaService {
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     private final KafkaTopics kafkaTopics;
+    private final KafkaPartitions kafkaPartitions;
 
-    public void sendBlockFundsMessage(String accountId, double amount) {
-        String message = String.format("{\"accountId\":\"%s\",\"amount\":%.2f}", accountId, amount);
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(kafkaTopics.blockFundsTopic(), message);
-        future.thenAccept(sendResult -> {
-            log.info("Send message in topic {}", sendResult.getRecordMetadata().topic());
-        });
+    public void sendBlockFundsMessage(MyMessageDto<T> message) {
+        CompletableFuture<SendResult<String, Object>> future =
+                kafkaTemplate.send(kafkaTopics.blockFundsTopic(), kafkaPartitions.paymentResponse(), message);
         future.exceptionally(ex -> {
-            log.error("Failed to send message: {}", ex.getMessage());
+            log.error("Failed to send message in block topic: {}", ex.getMessage());
             return null;
         });
     }
 
-    public void sendConfirmPaymentMessage(String paymentId, double amount) {
-        String message = String.format("{\"paymentId\":\"%s\",\"amount\":%.2f}", paymentId, amount);
-        CompletableFuture<SendResult<String, String>> future =
-                kafkaTemplate.send(kafkaTopics.confirmPaymentTopic(), paymentId, message);
+    public void sendConfirmPaymentMessage(MyMessageDto<T> message) {
+        CompletableFuture<SendResult<String, Object>> future =
+                kafkaTemplate.send(kafkaTopics.confirmPaymentTopic(), kafkaPartitions.paymentResponse(), message);
+        future.exceptionally(ex -> {
+            log.error("Failed to send message in confirm topic: {}", ex.getMessage());
+            return null;
+        });
     }
 
-    public void sendCancelPaymentMessage(String paymentId, String reason) {
-        String message = String.format("{\"paymentId\":\"%s\",\"reason\":\"%s\"}", paymentId, reason);
-        CompletableFuture<SendResult<String, String>> future =
-                kafkaTemplate.send(new ProducerRecord<>(kafkaTopics.cancelPaymentTopic(), paymentId, message));
+    public void sendCancelPaymentMessage(MyMessageDto<T> message) {
+        CompletableFuture<SendResult<String, Object>> future =
+                kafkaTemplate.send(kafkaTopics.cancelPaymentTopic(), kafkaPartitions.paymentResponse(), message);
+        future.exceptionally(ex -> {
+            log.error("Failed to send message in cancelled topic: {}", ex.getMessage());
+            return null;
+        });
     }
 
-    public void sendSuccessfulAuthorizationMessage(String accountId, String sessionId) {
-        String message = String.format("{\"accountId\":\"%s\",\"sessionId\":\"%s\"}", accountId, sessionId);
-        CompletableFuture<SendResult<String, String>> future =
-                kafkaTemplate.send(new ProducerRecord<>(kafkaTopics.successfulAuthorizationTopic(), accountId, message));
+    public void sendSuccessfulAuthorizationMessage(MyMessageDto<T> message) {
+        CompletableFuture<SendResult<String, Object>> future =
+                kafkaTemplate.send(kafkaTopics.authorizationTopic(), kafkaPartitions.paymentResponse(), message);
+        future.exceptionally(ex -> {
+            log.error("Failed to send message in authorization topic: {}", ex.getMessage());
+            return null;
+        });
     }
 }

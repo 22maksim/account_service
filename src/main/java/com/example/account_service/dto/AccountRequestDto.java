@@ -1,14 +1,13 @@
 package com.example.account_service.dto;
 
 import com.example.account_service.model.enums.AccountStatus;
-import com.example.account_service.model.enums.TypeAccountNumber;
+import com.example.account_service.model.enums.TypeNumber;
 import com.example.account_service.model.enums.TypeOwner;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Currency;
 
 @Builder
 @Getter
@@ -22,7 +21,7 @@ public class AccountRequestDto implements Serializable {
     @NotNull
     private TypeOwner typeOwner;
     @NotNull
-    private TypeAccountNumber type;
+    private TypeNumber type;
     @NotNull
     private String currency;
     @NotNull

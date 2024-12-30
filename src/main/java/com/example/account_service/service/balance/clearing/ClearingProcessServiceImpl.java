@@ -24,10 +24,11 @@ public class ClearingProcessServiceImpl implements ClearingProcessService {
         validated(balance, transactionRequest, balanceId);
         TypeTransactionBalance type = transactionRequest.getTypeTransactionBalance();
         return switch (type) {
-            case CREDIT -> balanceCreditAuthorization(balance, transactionRequest);
+            case CREDIT -> balanceCreditAuthorization(balance, transactionRequest); //авторизация на сумму n
             case FUNDS_DEPOSIT -> balanceFundsDeposit(balance, transactionRequest);
             case FUNDS_DEBITING -> balanceFundsDebiting(balance, transactionRequest);
-            //сначала делал через Enum с лямбдами, но читаемость кода сложная, поэтому switch
+            //Сначала делал через Enum с лямбдами, но читаемость кода сложная KISS, поэтому switch
+            //вариантов ограничено. Если успею, то дополню
         };
     }
 

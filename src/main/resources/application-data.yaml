@@ -11,7 +11,12 @@ topic:
     blockFundsTopic: block-funds-topic
     confirmPaymentTopic: confirm-payment-topic
     cancelPaymentTopic: cancel-payment-topic
-    successfulAuthorizationTopic: successful-authorization-topic
+    authorizationTopic: authorization-topic
+
+kafka:
+  partitions:
+    paymentRequest: payment-request
+    paymentResponse: payment-response
 
 batch:
   box:
