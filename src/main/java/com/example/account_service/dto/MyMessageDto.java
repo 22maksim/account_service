@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MyMessageDto<T> implements Serializable {
-    private String message;
+public class MyMessageDto<T extends Serializable> implements Serializable {
+    private String header;
     private T myEntity;
 }
