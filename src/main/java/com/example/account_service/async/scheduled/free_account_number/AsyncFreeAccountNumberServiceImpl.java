@@ -1,4 +1,4 @@
-package com.example.account_service.async_scheduled.free_account_number;
+package com.example.account_service.async.scheduled.free_account_number;
 
 import com.example.account_service.model.enums.Currency;
 import com.example.account_service.model.enums.TypeNumber;

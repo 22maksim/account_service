@@ -1,3 +1,6 @@
+server:
+  port: 8088
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -30,23 +33,38 @@ spring:
           max-active: 10
           max-idle: 5
           min-idle: 2
-          max-wait: 10000
+          max-wait: 5000
 
   kafka:
     bootstrap-servers: localhost:9092
+    listener:
+      ack-mode: record
+      concurrency: 5
     consumer:
-      group-id: my-group-id
       auto-offset-reset: earliest
+      max-poll-records: 300
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        max.pool.interval.ms: 240000
+        spring.json.trusted.packages: "*"
+      enable-auto-commit: false
+
     producer:
+      properties:
+        transaction-id-prefix: tx-
+        enable-idempotence: true
+        acks: all
+        batch.size: 16384
+        linger.ms: 5
+        retries: 3
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
 
   profiles:
-    active: data, dev
-
-  port: 8088
+    active: data
 
 async:
   pools:

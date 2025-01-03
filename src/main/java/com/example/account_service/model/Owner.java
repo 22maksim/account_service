@@ -19,6 +19,7 @@ public class Owner {
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private TypeOwner type;
 }

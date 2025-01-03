@@ -1,8 +1,8 @@
 package com.example.account_service.service.balance;
 
-import com.example.account_service.dto.balance.BalanceOpenRequestDto;
-import com.example.account_service.dto.balance.BalanceResponseDto;
-import com.example.account_service.dto.balance.BalanceTransactionRequestDto;
+import com.example.account_service.model.dto.balance.BalanceOpenRequestDto;
+import com.example.account_service.model.dto.balance.BalanceResponseDto;
+import com.example.account_service.model.dto.balance.BalanceTransactionRequestDto;
 import com.example.account_service.exeption.DataBalanceException;
 import com.example.account_service.mapper.balance.BalanceMapper;
 import com.example.account_service.model.Account;
@@ -14,8 +14,6 @@ import com.example.account_service.service.balance.clearing.ClearingProcessServi
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

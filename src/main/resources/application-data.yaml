@@ -1,6 +1,3 @@
-user-login:
-  username: admin
-  password: admin123
 
 topic:
   redis:
@@ -9,9 +6,17 @@ topic:
 
   kafka:
     blockFundsTopic: block-funds-topic
-    confirmPaymentTopic: confirm-payment-topic
+    clearingPaymentTopic: clearing-payment-topic
     cancelPaymentTopic: cancel-payment-topic
-    successfulAuthorizationTopic: successful-authorization-topic
+    authorizationTopic: authorization-topic
+    responseAuthorisationTopic: response-authorisation-topic
+    responseCancelTopic: response-cancel-topic
+    responseClearingTopic: response-clearing-topic
+
+kafka:
+  partitions:
+    paymentRequest: payment-request
+    paymentResponse: payment-response
 
 batch:
   box:

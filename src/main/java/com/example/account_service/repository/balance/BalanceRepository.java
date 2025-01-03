@@ -1,6 +1,5 @@
 package com.example.account_service.repository.balance;
 
-import com.example.account_service.dto.balance.BalanceResponseDto;
 import com.example.account_service.model.Balance;
 import org.springframework.data.jpa.repository.JpaRepository;
 
