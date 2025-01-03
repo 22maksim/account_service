@@ -1,7 +1,7 @@
 package com.example.account_service.mapper.balance;
 
-import com.example.account_service.dto.balance.BalanceOpenRequestDto;
-import com.example.account_service.dto.balance.BalanceResponseDto;
+import com.example.account_service.model.dto.balance.BalanceOpenRequestDto;
+import com.example.account_service.model.dto.balance.BalanceResponseDto;
 import com.example.account_service.model.Balance;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

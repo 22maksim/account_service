@@ -1,32 +1,29 @@
-package com.example.account_service.dto;
+package com.example.account_service.model.dto.account;
 
 import com.example.account_service.model.enums.AccountStatus;
+import com.example.account_service.model.enums.TypeNumber;
 import com.example.account_service.model.enums.TypeOwner;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Currency;
 
 @Builder
 @Getter
 @Setter
-public class AccountResponseDto implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class AccountRequestDto implements Serializable {
     private String id;
-    @NotNull
     @Positive
     private long ownerId;
     @NotNull
     private TypeOwner typeOwner;
     @NotNull
+    private TypeNumber type;
+    @NotNull
     private String currency;
     @NotNull
-    private String status;
-    private Timestamp createdAt;
-    private Timestamp updateAt;
-    private Timestamp closeAt;
+    private AccountStatus status;
 }

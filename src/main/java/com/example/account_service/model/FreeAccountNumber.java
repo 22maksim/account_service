@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@Table(name = "free_account_numbers")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FreeAccountNumber {

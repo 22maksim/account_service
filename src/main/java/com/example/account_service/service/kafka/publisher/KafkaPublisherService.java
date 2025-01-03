@@ -1,6 +1,6 @@
 package com.example.account_service.service.kafka.publisher;
 
-import com.example.account_service.dto.MyMessageDto;
+import com.example.account_service.model.dto.MyMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

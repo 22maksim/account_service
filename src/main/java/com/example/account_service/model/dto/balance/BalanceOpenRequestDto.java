@@ -1,4 +1,4 @@
-package com.example.account_service.dto.balance;
+package com.example.account_service.model.dto.balance;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

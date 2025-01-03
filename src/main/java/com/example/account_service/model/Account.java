@@ -27,21 +27,22 @@ public class Account {
     @JoinColumn(name = "balance_id", referencedColumnName = "id")
     private Balance balance;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private TypeNumber type;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "currency", nullable = false)
     private Currency currency;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AccountStatus status;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp createdAt;
 
     @Column(name = "update_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp updateAt;
 
     @Column(name = "close_at")

@@ -1,7 +1,7 @@
 package com.example.account_service.controller.account;
 
-import com.example.account_service.dto.AccountRequestDto;
-import com.example.account_service.dto.AccountResponseDto;
+import com.example.account_service.model.dto.account.AccountRequestDto;
+import com.example.account_service.model.dto.account.AccountResponseDto;
 import com.example.account_service.service.account.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

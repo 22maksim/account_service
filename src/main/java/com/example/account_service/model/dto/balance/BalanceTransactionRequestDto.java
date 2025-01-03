@@ -1,4 +1,4 @@
-package com.example.account_service.dto.balance;
+package com.example.account_service.model.dto.balance;
 
 import com.example.account_service.model.enums.TypeTransactionBalance;
 import jakarta.validation.constraints.NotNull;

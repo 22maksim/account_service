@@ -1,9 +1,9 @@
 package com.example.account_service.service.dms;
 
-import com.example.account_service.dto.PaymentRequestDto;
+import com.example.account_service.model.dto.payment.PaymentRequestDto;
 
 public interface DmsService {
-    void authorisationRequestForPayment(PaymentRequestDto paymentRequestDto);
+    void authorisationRequestForPayment();
 
     void cancelledRequestForPayment(PaymentRequestDto paymentRequestDto);
 

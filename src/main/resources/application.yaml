@@ -51,9 +51,10 @@ spring:
       enable-auto-commit: false
 
     producer:
-      transaction-id-prefix: tx-
       properties:
-        acks: 1
+        transaction-id-prefix: tx-
+        enable-idempotence: true
+        acks: all
         batch.size: 16384
         linger.ms: 5
         retries: 3

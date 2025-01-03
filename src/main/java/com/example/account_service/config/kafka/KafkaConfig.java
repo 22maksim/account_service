@@ -1,10 +1,8 @@
 package com.example.account_service.config.kafka;
 
 import com.example.account_service.config.kafka.topic.KafkaTopics;
-import com.example.account_service.dto.MyMessageDto;
-import com.example.account_service.dto.PaymentRequestDto;
+import com.example.account_service.model.dto.MyMessageDto;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +15,6 @@ import org.springframework.kafka.transaction.KafkaTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.io.Serializable;
-import java.util.Map;
 
 @EnableKafka
 @Configuration
@@ -29,13 +26,12 @@ public class KafkaConfig<T extends Serializable> {
 
     @Bean
     public ProducerFactory<String, MyMessageDto<T>> producerFactory() {
-        DefaultKafkaProducerFactory<String, MyMessageDto<T>> producerFactory=  new DefaultKafkaProducerFactory<>(
+        DefaultKafkaProducerFactory<String, MyMessageDto<T>> producerFactory = new DefaultKafkaProducerFactory<>(
                 kafkaProperties.buildProducerProperties()
         );
         producerFactory.setTransactionIdPrefix("tx-");
         return producerFactory;
     }
-
 
     @Bean
     public KafkaTransactionManager<String, MyMessageDto<T>> kafkaTransactionManager(
@@ -68,7 +64,7 @@ public class KafkaConfig<T extends Serializable> {
     }
 
     @Bean
-     public NewTopic paymentAuthorizationTopic() {
+    public NewTopic paymentAuthorizationTopic() {
         return TopicBuilder.name(kafkaTopics.authorizationTopic())
                 .partitions(5)
                 .replicas(1)

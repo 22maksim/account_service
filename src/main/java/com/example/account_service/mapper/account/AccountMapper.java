@@ -1,12 +1,10 @@
 package com.example.account_service.mapper.account;
 
-import com.example.account_service.dto.AccountRequestDto;
-import com.example.account_service.dto.AccountResponseDto;
+import com.example.account_service.model.dto.account.AccountRequestDto;
+import com.example.account_service.model.dto.account.AccountResponseDto;
 import com.example.account_service.model.Account;
-import com.example.account_service.model.enums.Currency;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)

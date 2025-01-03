@@ -1,8 +1,7 @@
 package com.example.account_service.service.account;
 
-import com.example.account_service.dto.AccountRequestDto;
-import com.example.account_service.dto.AccountResponseDto;
-import com.example.account_service.exeption.DataAccountException;
+import com.example.account_service.model.dto.account.AccountRequestDto;
+import com.example.account_service.model.dto.account.AccountResponseDto;
 import com.example.account_service.exeption.UncorrectedValueRequest;
 import com.example.account_service.mapper.account.AccountMapper;
 import com.example.account_service.model.Account;
@@ -11,15 +10,9 @@ import com.example.account_service.model.enums.AccountStatus;
 import com.example.account_service.repository.account.AccountRepository;
 import com.example.account_service.repository.owners.OwnersRepository;
 import com.example.account_service.service.free_account_numbers.FreeAccountNumbersService;
-import io.netty.channel.ChannelHandler;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;

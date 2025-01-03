@@ -1,7 +1,7 @@
 package com.example.account_service.service.kafka.listeners;
 
-import com.example.account_service.dto.MyMessageDto;
-import com.example.account_service.dto.PaymentRequestDto;
+import com.example.account_service.model.dto.MyMessageDto;
+import com.example.account_service.model.dto.payment.PaymentRequestDto;
 import com.example.account_service.service.dms.DmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

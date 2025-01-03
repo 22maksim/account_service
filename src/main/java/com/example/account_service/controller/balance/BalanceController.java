@@ -1,8 +1,8 @@
 package com.example.account_service.controller.balance;
 
-import com.example.account_service.dto.balance.BalanceOpenRequestDto;
-import com.example.account_service.dto.balance.BalanceResponseDto;
-import com.example.account_service.dto.balance.BalanceTransactionRequestDto;
+import com.example.account_service.model.dto.balance.BalanceOpenRequestDto;
+import com.example.account_service.model.dto.balance.BalanceResponseDto;
+import com.example.account_service.model.dto.balance.BalanceTransactionRequestDto;
 import com.example.account_service.service.balance.BalanceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

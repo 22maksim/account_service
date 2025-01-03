@@ -1,8 +1,9 @@
 package com.example.account_service.service.kafka.listeners;
 
-import com.example.account_service.dto.MyMessageDto;
-import com.example.account_service.dto.PaymentRequestDto;
+import com.example.account_service.model.dto.MyMessageDto;
+import com.example.account_service.model.dto.payment.PaymentRequestDto;
 import com.example.account_service.service.dms.DmsService;
+import com.example.account_service.service.pending.PendingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AuthorizationTransactionKafkaListener {
-    private final DmsService dmsServiceImpl;
+    private final PendingService pendingServiceImpl;
 
     @KafkaListener(topics = "authorization-topic", groupId = "authorisation-group")
     public void onAuthorizationPaymentTransaction(MyMessageDto<PaymentRequestDto> myMessageDto, Acknowledgment ack) {
@@ -24,7 +25,7 @@ public class AuthorizationTransactionKafkaListener {
                 throw new IllegalArgumentException("requestDto is null");
             } else {
                 System.out.println("requestDto = " + requestDto);
-                dmsServiceImpl.authorisationRequestForPayment(requestDto);
+                pendingServiceImpl.createPending(requestDto);
                 ack.acknowledge();
             }
         } catch (Exception e) {
