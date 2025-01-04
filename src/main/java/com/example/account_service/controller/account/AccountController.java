@@ -60,9 +60,7 @@ public class AccountController {
     @PostMapping("{id}/close")
     public AccountResponseDto close(
             @Parameter(description = "This id from closed the account")
-            @PathVariable @NotNull String id,
-            @Parameter(description = "Dto from update and close Account")
-            @RequestBody @NotNull @Valid AccountRequestDto accountRequestDto) {
-        return accountService.close(id, accountRequestDto);
+            @PathVariable @NotNull String id) {
+        return accountService.close(id);
     }
 }

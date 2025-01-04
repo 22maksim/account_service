@@ -1,6 +1,7 @@
 package com.example.account_service.model.dto.account;
 
 import com.example.account_service.model.enums.AccountStatus;
+import com.example.account_service.model.enums.TariffType;
 import com.example.account_service.model.enums.TypeNumber;
 import com.example.account_service.model.enums.TypeOwner;
 import jakarta.validation.constraints.NotNull;
@@ -26,4 +27,5 @@ public class AccountRequestDto implements Serializable {
     private String currency;
     @NotNull
     private AccountStatus status;
+    private TariffType tariffType;
 }

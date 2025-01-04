@@ -7,3 +7,7 @@ databaseChangeLog:
       file: db/changelog/changeset/account_V003_pending.sql
   - include:
       file: db/changelog/changeset/account_V004_pending_add_version.sql
+  - include:
+      file: db/changelog/changeset/account_V005_pending_set_type_amount.sql
+  - include:
+      file: db/changelog/changeset/account_V006_tariff.sql

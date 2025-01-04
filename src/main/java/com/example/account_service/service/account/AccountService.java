@@ -10,7 +10,7 @@ public interface AccountService {
 
     AccountResponseDto block(String id);
 
-    AccountResponseDto close(String id, AccountRequestDto accountRequestDto);
+    AccountResponseDto close(String id);
 
     boolean existsAccountById(String id);
 }

@@ -20,7 +20,7 @@ kafka:
 
 batch:
   box:
-    size: 10
+    size: 20
     volume: 500
 
 cron:

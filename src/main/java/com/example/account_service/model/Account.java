@@ -2,6 +2,7 @@ package com.example.account_service.model;
 
 import com.example.account_service.model.enums.AccountStatus;
 import com.example.account_service.model.enums.Currency;
+import com.example.account_service.model.enums.TariffType;
 import com.example.account_service.model.enums.TypeNumber;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,6 +48,9 @@ public class Account {
 
     @Column(name = "close_at")
     private Timestamp closeAt;
+
+    @Column(name = "tariff_type")
+    private TariffType tariffType;
 
     @Version
     private int version;

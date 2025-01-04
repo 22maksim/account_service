@@ -1,5 +1,6 @@
 package com.example.account_service.model.dto.account;
 
+import com.example.account_service.model.enums.TariffType;
 import com.example.account_service.model.enums.TypeOwner;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -24,6 +25,7 @@ public class AccountResponseDto implements Serializable {
     private String currency;
     @NotNull
     private String status;
+    private TariffType tariffType;
     private Timestamp createdAt;
     private Timestamp updateAt;
     private Timestamp closeAt;
