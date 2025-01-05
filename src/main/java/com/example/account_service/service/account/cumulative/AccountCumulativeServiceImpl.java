@@ -1,9 +1,12 @@
 package com.example.account_service.service.account.cumulative;
 
+import com.example.account_service.aop.balance.audit.AuditBalance;
+import com.example.account_service.aop.balance.audit.AuditBalanceCumulative;
 import com.example.account_service.exeption.DataAccountException;
 import com.example.account_service.model.Account;
 import com.example.account_service.model.CumulativeTariff;
 import com.example.account_service.model.SavingsAccount;
+import com.example.account_service.model.enums.TypeBalanceOperation;
 import com.example.account_service.model.enums.TypeNumber;
 import com.example.account_service.model.properties.BoxProperties;
 import com.example.account_service.repository.account.AccountRepository;
@@ -56,12 +59,13 @@ public class AccountCumulativeServiceImpl implements AccountCumulativeService {
         } while (pageAccounts.hasNext());
     }
 
+    @AuditBalanceCumulative(typeOperation = TypeBalanceOperation.UPDATE)
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(retryFor = {SQLDataException.class, OptimisticLockException.class}, backoff = @Backoff(delay = 5000, multiplier = 2))
-    public void updateBalance(List<Account> accounts) {
+    public List<Account> updateBalance(List<Account> accounts) {
         if (accounts.isEmpty()) {
             log.info("accounts to increase the balance by interest, not found");
-            return;
+            return null;
         }
         for (Account account : accounts) {
             CumulativeTariff cumTariff = cumulativeTariffRepository.findById(account.getTariffType().name())
@@ -76,6 +80,6 @@ public class AccountCumulativeServiceImpl implements AccountCumulativeService {
                     .orElseThrow(() -> new DataAccountException("savings account not found"));
             savingsAccount.setUpdatePercent(Timestamp.valueOf(LocalDateTime.now()));
         }
-        accountRepository.saveAll(accounts);
+        return accountRepository.saveAll(accounts);
     }
 }

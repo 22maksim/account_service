@@ -1,4 +1,4 @@
-package com.example.account_service.service.cumulative.tariff;
+package com.example.account_service.service.account.cumulative.tariff;
 
 import com.example.account_service.exeption.DataAccountException;
 import com.example.account_service.model.CumulativeTariff;
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +48,8 @@ public class CumulativeTariffServiceImpl implements CumulativeTariffService {
         CumulativeTariff cumulativeTariff = cumulativeTariffRepository.findById(requestDto.getType())
                 .orElseThrow(() -> new DataAccountException("Cumulative Tariff Not Found"));
 
-        List<Integer> rateList = objectMapper.convertValue(cumulativeTariff.getHistory(), new TypeReference<>() {});
+        List<Integer> rateList = objectMapper.convertValue(cumulativeTariff.getHistory(), new TypeReference<>() {
+        });
         rateList.add(requestDto.getRate());
 
         return CumulativeTariffResponseDto.builder()
@@ -57,7 +59,16 @@ public class CumulativeTariffServiceImpl implements CumulativeTariffService {
     }
 
     @Override
-    public List<CumulativeTariffResponseDto> getAllCumulativeTariffs() {
-        return List.of();
+    public List<CumulativeTariffResponseDto> getAllCumulativeTariffs(int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        List<CumulativeTariff> tariffList = cumulativeTariffRepository.findAll(pageable).getContent();
+
+        return tariffList.stream()
+                .map(tariff -> CumulativeTariffResponseDto.builder()
+                        .type(tariff.getType().name())
+                        .historyRates(objectMapper.convertValue(tariff.getHistory(), new TypeReference<>() {}))
+                        .updateAt(tariff.getUpdateAt())
+                        .build())
+                .toList();
     }
 }

@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS balance_audit
     id                   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     account_id           varchar(20),
     type                 varchar(15) not null,
-    authorization_amount int       default 200,
-    actual_amount        int       default 0,
+    authorization_amount BIGINT       default 200,
+    actual_amount        BIGINT       default 0,
     transaction_changed  bigint   not null,
     created_at           TIMESTAMP DEFAULT current_timestamp
 );
@@ -84,27 +84,31 @@ CREATE TABLE IF NOT EXISTS rate
     history     json
 );
 
--- INSERT  INTO account_numbers_sequence  (type, counter)
--- VALUES ('DEBIT', 0),
---        ('CREDIT', 0),
---        ('CUMULATIVE', 0);
+/* type account start counter from created account number */
+
+INSERT  INTO account_numbers_sequence  (type, counter)
+VALUES ('DEBIT', 0),
+       ('CREDIT', 0),
+       ('CUMULATIVE', 0)
+ON CONFLICT (type) DO NOTHING;
 
 /* dependencies */
--- ALTER TABLE account
---     ADD CONSTRAINT fk_owner
---         foreign key (owner_id)
---             REFERENCES owners(id);
---
--- ALTER TABLE balance
---     ADD CONSTRAINT fk_balance_account
---         FOREIGN KEY (account_id)
---             REFERENCES account (id);
---
--- ALTER TABLE balance_audit
---     ADD CONSTRAINT fk_balance_audit_account
---         FOREIGN KEY (account_id)
---             REFERENCES account (id);
+
+ALTER TABLE account
+    ADD CONSTRAINT fk_owner
+        foreign key (owner_id)
+            REFERENCES owners(id);
+
+ALTER TABLE balance
+    ADD CONSTRAINT fk_balance_account
+        FOREIGN KEY (account_id)
+            REFERENCES account (id);
+
+ALTER TABLE balance_audit
+    ADD CONSTRAINT fk_balance_audit_account
+        FOREIGN KEY (account_id)
+            REFERENCES account (id);
 
 /* INDEXES */
 
--- CREATE INDEX idx_owner ON account (owner_id);
+CREATE INDEX idx_owner ON account (owner_id);
