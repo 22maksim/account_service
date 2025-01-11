@@ -28,9 +28,9 @@ public class TariffCashback {
 
     @BatchSize(size = 5)
     @OneToMany(mappedBy = "tariffCashback", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TariffMerchantPercents> tariffMerchantPercents = new ArrayList<>();
+    private List<TariffMerchantPercents> tariffMerchantPercents;
 
     @BatchSize(size = 5)
     @OneToMany(mappedBy = "tariffCashback", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TariffOperationTypePercents> tariffOperationTypePercents = new ArrayList<>();
+    private List<TariffOperationTypePercents> tariffOperationTypePercents;
 }
