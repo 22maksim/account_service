@@ -8,6 +8,8 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.concurrent.ForkJoinPool;
+
 @Configuration
 @EnableAsync
 public class AsyncConfig {
@@ -23,5 +25,10 @@ public class AsyncConfig {
         executor.setThreadNamePrefix(prefix);
         executor.initialize();
         return executor;
+    }
+
+    @Bean(name = "forkJoinPool")
+    public ForkJoinPool forkJoinPool() {
+        return new ForkJoinPool();
     }
 }

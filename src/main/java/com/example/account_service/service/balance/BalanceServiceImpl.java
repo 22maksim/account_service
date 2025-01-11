@@ -1,21 +1,27 @@
 package com.example.account_service.service.balance;
 
-import com.example.account_service.model.dto.balance.BalanceOpenRequestDto;
-import com.example.account_service.model.dto.balance.BalanceResponseDto;
-import com.example.account_service.model.dto.balance.BalanceTransactionRequestDto;
 import com.example.account_service.exeption.DataBalanceException;
 import com.example.account_service.mapper.balance.BalanceMapper;
 import com.example.account_service.model.Account;
 import com.example.account_service.model.Balance;
+import com.example.account_service.model.dto.balance.BalanceOpenRequestDto;
+import com.example.account_service.model.dto.balance.BalanceResponseDto;
+import com.example.account_service.model.dto.balance.BalanceTransactionRequestDto;
 import com.example.account_service.repository.account.AccountRepository;
 import com.example.account_service.repository.balance.BalanceRepository;
 import com.example.account_service.repository.owners.OwnersRepository;
 import com.example.account_service.service.balance.clearing.ClearingProcessServiceImpl;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLDataException;
+import java.util.List;
 
 @Slf4j
 @CacheConfig(cacheNames = "balances")
@@ -52,7 +58,17 @@ public class BalanceServiceImpl implements BalanceService {
     @Transactional
     public BalanceResponseDto updateBalance(Long id, BalanceTransactionRequestDto transactionRequest) {
         Balance balance = clearingProcessServiceImpl.processing(transactionRequest, id);
+
         return balanceMapper.balanceToBalanceResponseDto(balance);
+    }
+
+    @Transactional
+    @Retryable(retryFor = {OptimisticLockException.class, SQLDataException.class}, backoff = @Backoff(delay = 5000, multiplier = 2))
+    @Override
+    public void saveAllBalances(List<Balance> balances) {
+        if (balances != null) {
+            balanceRepository.saveAll(balances);
+        }
     }
 
     private void validator(Account account) {
