@@ -1,9 +1,8 @@
 package com.example.account_service.aop.balance.audit;
 
-import com.example.account_service.mapper.balance.BalanceMapper;
 import com.example.account_service.model.Account;
 import com.example.account_service.model.Balance;
-import com.example.account_service.model.dto.balance.BalanceResponseDto;
+import com.example.account_service.model.BalanceAudit;
 import com.example.account_service.service.balance.audit.BalanceAuditService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class BalanceCumulativeAspect {
-    private final BalanceMapper balanceMapper;
     private final BalanceAuditService balanceAuditServiceImpl;
 
     @Pointcut("@annotation(auditBalanceCumulative)")
@@ -38,9 +36,14 @@ public class BalanceCumulativeAspect {
                 return;
             }
             Balance balance = account.getBalance();
-            BalanceResponseDto responseDto = balanceMapper.balanceToBalanceResponseDto(balance);
+            BalanceAudit balanceAudit = BalanceAudit.builder()
+                    .type(account.getType())
+                    .actual_amount(balance.getCurrentBalance())
+                    .authorizationAmount(balance.getAuthorizationBalance())
+                    .account(account)
+                    .build();
 
-            balanceAuditServiceImpl.saveBalanceAudit(responseDto);
+            balanceAuditServiceImpl.saveBalanceAudit(balanceAudit);
 
             log.info("Saved cumulative audit from account balance. Type: {}. Id: {}", typeOperation, balance.getId());
         });

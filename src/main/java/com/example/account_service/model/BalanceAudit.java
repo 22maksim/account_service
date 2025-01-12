@@ -1,9 +1,11 @@
 package com.example.account_service.model;
 
 import com.example.account_service.model.enums.TypeNumber;
+import com.example.account_service.model.enums.TypeTransactionBalance;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -36,4 +38,17 @@ public class BalanceAudit {
 
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    @Column(name = "amount_operation")
+    private Long amountOperation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_transactional_balance")
+    private TypeTransactionBalance typeTransactionBalance;
+
+    @Column(name = "operation_type_percent_id")
+    private Long operationTypePercentId;
+
+    @Column(name = "merchant_percent_id")
+    private Long merchantPercentId;
 }

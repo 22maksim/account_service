@@ -1,11 +1,14 @@
 package com.example.account_service.model;
 
+import com.example.account_service.model.cashback.tariff.TariffCashback;
 import com.example.account_service.model.enums.AccountStatus;
 import com.example.account_service.model.enums.Currency;
 import com.example.account_service.model.enums.TariffType;
 import com.example.account_service.model.enums.TypeNumber;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.sql.Timestamp;
 
@@ -52,6 +55,34 @@ public class Account {
     @Column(name = "tariff_type")
     private TariffType tariffType;
 
+    @ManyToOne
+    @JoinColumn(name = "tariff_cashback_id", nullable = false)
+    private TariffCashback tariffCashback;
+
     @Version
     private int version;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        return new EqualsBuilder()
+                .append(id, account.id)
+                .append(type, account.type)
+                .append(currency, account.currency)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(type)
+                .append(currency)
+                .toHashCode();
+    }
 }
