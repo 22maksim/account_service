@@ -40,3 +40,6 @@ logging:
       springframework:
         data:
           redis: DEBUG
+
+size:
+  max_account_from_owner: 15

@@ -35,13 +35,11 @@ public class BalanceAspect {
 
         BalanceTransactionRequestDto transactionRequestDto = (BalanceTransactionRequestDto) args[1];
 
-
-        // Выполняем оригинальный метод и получаем результат
         Object result;
         try {
             result = proceedingJoinPoint.proceed();
         } catch (Throwable throwable) {
-            log.error("Ошибка во время выполнения метода: {}", throwable.getMessage());
+            log.error("Error during method execution: {}", throwable.getMessage());
             throw throwable;
         }
 
@@ -49,9 +47,9 @@ public class BalanceAspect {
             balanceAuditServiceImpl.updateBalanceAudit(responseDto, transactionRequestDto);
             log.info("Audit balance operation: {} {}", typeOperation, responseDto.getId());
         } else {
-            log.warn("Возвращаемое значение не является BalanceResponseDto: {}", result);
+            log.warn("The return value is not a BalanceResponseDto: {}", result);
         }
 
-        return result; // Возвращаем результат, чтобы не нарушить выполнение метода
+        return result;
     }
 }

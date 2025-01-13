@@ -1,4 +1,4 @@
-package com.example.account_service.async.scheduled.payment.request.authorisation;
+package com.example.account_service.as.scheduled.payment.request.authorisation;
 
 import com.example.account_service.service.dms.DmsService;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AutoStartAuthorisationPending {
+public class AutoStartAuthorisationDto {
     private final DmsService dmsServiceImpl;
 
     @Scheduled(fixedRate = 300000)

@@ -1,4 +1,4 @@
-package com.example.account_service.async.scheduled.cashback;
+package com.example.account_service.as.scheduled.cashback;
 
 import com.example.account_service.service.balance.audit.BalanceAuditService;
 import lombok.RequiredArgsConstructor;

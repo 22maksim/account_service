@@ -1,4 +1,4 @@
-package com.example.account_service.async.scheduled.update.balance.cumulative;
+package com.example.account_service.as.scheduled.update.balance.cumulative;
 
 import com.example.account_service.service.account.cumulative.AccountCumulativeService;
 import lombok.RequiredArgsConstructor;

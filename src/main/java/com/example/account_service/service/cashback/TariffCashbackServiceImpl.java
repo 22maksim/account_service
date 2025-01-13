@@ -70,4 +70,11 @@ public class TariffCashbackServiceImpl implements TariffCashbackService {
                 .orElseThrow(() -> new DataCashbackException("TariffCashback not found"));
         return tariffCashbackMapper.toResponseDto(tariffCashback);
     }
+
+    @Transactional
+    @Override
+    public TariffCashback getTariffCashbackEntity(Long id) {
+        return tariffCashbackRepository.findById(id)
+                .orElseThrow(() -> new DataCashbackException("TariffCashback not found"));
+    }
 }

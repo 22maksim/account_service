@@ -1,4 +1,4 @@
-package com.example.account_service.async.scheduled.free_account_number;
+package com.example.account_service.as.scheduled.free_account_number;
 
 import org.springframework.scheduling.annotation.Scheduled;
 

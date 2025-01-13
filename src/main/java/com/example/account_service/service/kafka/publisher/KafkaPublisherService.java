@@ -24,5 +24,4 @@ public class KafkaPublisherService<T extends Serializable> {
             return null;
         });
     }
-
 }
